@@ -1,0 +1,10 @@
+node_modules/
+backend/data/*.db
+backend/data/*.db-journal
+backend/data/*.db-wal
+backend/data/*.db-shm
+frontend/dist/
+.env
+*.log
+.DS_Store
+Thumbs.db

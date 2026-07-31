@@ -1,0 +1,25 @@
+{
+  "name": "presupuestospro-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Backend de PresupuestosPro: API Express + SQLite + generación de PDF",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "test": "vitest run tests/unit --config vitest.config.mjs",
+    "test:api": "vitest run tests/api --config vitest.config.mjs"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "pdfmake": "^0.2.12"
+  },
+  "devDependencies": {
+    "vitest": "^2.1.1",
+    "supertest": "^7.0.0"
+  }
+}

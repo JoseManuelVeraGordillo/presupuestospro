@@ -1,0 +1,15 @@
+{
+  "name": "presupuestospro-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Frontend de PresupuestosPro: interfaz web mobile-first servida por el backend Express",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.4.6"
+  }
+}
