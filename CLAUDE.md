@@ -23,3 +23,7 @@ Tests: `cd backend && npm test` (Vitest, unit) y `npm run test:api` (Supertest, 
 - Toda desviación de la constitución se documenta en la sección "Complexity Tracking" del `plan.md` de la spec.
 
 Las reglas de producto viven en .specify/memory/constitution.md y el estado del producto en specs/README.md.
+## Spec-kit
+
+* Antes de ejecutar el flujo de `/speckit.specify`, SIEMPRE ejecuta primero el hook `before_specify` (skill `speckit-git-feature`) para crear la rama de la feature, y espera su resultado antes de crear la spec.
+* Tras completar `/speckit.specify`, verifica con `git branch --show-current` que estamos en la rama `NNN-nombre-feature` y no en `master`. Si no es así, avísame antes de continuar.
