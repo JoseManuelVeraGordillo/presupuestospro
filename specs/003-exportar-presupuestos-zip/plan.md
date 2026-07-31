@@ -164,3 +164,20 @@ datos distinta a la ya establecida.
 | Violation | Why Needed | Simpler Alternative Rejected Because |
 |-----------|------------|---------------------------------------|
 | Nueva dependencia de backend: `archiver` | El .zip descargable (FR-002, FR-004) es el propio objetivo de la feature; Node.js no incluye de fábrica un escritor del contenedor ZIP (solo `zlib` para compresión bruta), y permite volcar el .zip directamente a la respuesta HTTP en streaming sin montar todo el archivo en memoria (ver research.md punto 1) | Implementar el formato ZIP a mano sobre `zlib`: complejidad y superficie de error muy superiores a las de una librería madura y ampliamente usada, sin ningún beneficio para un producto de un solo freelancer por instalación |
+
+## Fase Final: Mantenimiento de CLAUDE.md
+
+Último paso de la fase de implementación (debe generarse como la última
+tarea de `tasks.md` y ejecutarse al final de `/speckit-implement`, una vez
+el resto de tareas de esta spec está terminado y verificado):
+
+- **Actualizar `CLAUDE.md`** con las decisiones de diseño y convenciones
+  nuevas de esta feature, una línea por decisión, con referencia a la spec
+  (p. ej. `[003] ...`).
+- No incluir entradas "por incluir" ni volcar el detalle de la feature:
+  asegurarse siempre de que cada línea añadida es información transversal y
+  relevante para el proyecto en su conjunto, que futuras specs puedan
+  aprovechar (p. ej. una dependencia nueva adoptada, un patrón de
+  respuesta HTTP reutilizable, una convención de nombrado) — no una
+  descripción de lo que hace esta feature en concreto, que ya vive en
+  `specs/003-exportar-presupuestos-zip/`.
