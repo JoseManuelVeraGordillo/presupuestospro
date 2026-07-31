@@ -197,3 +197,36 @@ describe('API /api/presupuestos', () => {
     expect(consulta.body.estado).toBe('borrador');
   });
 });
+
+describe('GET /api/presupuestos/exportar', () => {
+  it('devuelve 200 con cabeceras de .zip cuando hay presupuestos guardados (US1, FR-004)', async () => {
+    await request(app).post('/api/presupuestos').send(datosPresupuesto());
+
+    const res = await request(app).get('/api/presupuestos/exportar');
+    expect(res.status).toBe(200);
+    expect(res.headers['content-type']).toBe('application/zip');
+    expect(res.headers['content-disposition']).toMatch(
+      /attachment; filename="presupuestospro-copia-\d{4}-\d{2}-\d{2}\.zip"/
+    );
+  });
+
+  it('devuelve 409 sin presupuestos guardados y no envía ningún .zip (US2, FR-010)', async () => {
+    const todos = await request(app).get('/api/presupuestos');
+    await Promise.all(todos.body.map((p) => request(app).delete(`/api/presupuestos/${p.id}`)));
+
+    const res = await request(app).get('/api/presupuestos/exportar');
+    expect(res.status).toBe(409);
+    expect(res.body).toHaveProperty('error');
+    expect(res.headers['content-type']).not.toBe('application/zip');
+  });
+
+  it('genera el .zip sin errores con un cliente con caracteres inválidos en el nombre (US3, FR-008)', async () => {
+    await request(app)
+      .post('/api/presupuestos')
+      .send(datosPresupuesto({ clienteNombre: 'Diseño/Web: S.L.' }));
+
+    const res = await request(app).get('/api/presupuestos/exportar');
+    expect(res.status).toBe(200);
+    expect(res.headers['content-type']).toBe('application/zip');
+  });
+});

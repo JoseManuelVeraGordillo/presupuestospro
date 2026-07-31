@@ -1,0 +1,28 @@
+# Extensiones de spec-kit para PresupuestosPro.
+#
+# Esquema de hooks (leído por cada skill speckit-* en su sección
+# "Pre-Execution Checks" / "Mandatory Post-Execution Hooks"):
+#
+#   hooks:
+#     <before_x|after_x>:
+#       - extension: <etiqueta legible del grupo de extensión>
+#         command: <id de comando con puntos, p. ej. "speckit.git.feature">
+#         description: <qué hace, se muestra siempre>
+#         optional: <true|false — false = se ejecuta automáticamente y se espera su resultado>
+#         enabled: <true|false — por defecto true si se omite>
+#         condition: <opcional; sin motor de evaluación en este proyecto, se deja vacío>
+#
+# El comando se invoca sustituyendo los puntos por guiones: "speckit.git.feature"
+# → "/speckit-git-feature".
+
+hooks:
+  before_specify:
+    - extension: "git-feature-branch"
+      command: "speckit.git.feature"
+      description: >-
+        Crea (o cambia a) la rama de la feature NNN-nombre-feature antes de
+        generar la spec, tal y como exige CLAUDE.md ("Antes de ejecutar el
+        flujo de /speckit.specify, SIEMPRE ejecuta primero el hook
+        before_specify"). Implementada por la skill speckit-git-feature.
+      optional: false
+      enabled: true

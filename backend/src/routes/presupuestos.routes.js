@@ -10,6 +10,7 @@ const {
   eliminarPresupuesto,
 } = require('../models/presupuestos');
 const { generarPdf } = require('../services/generarPdf');
+const { generarZipExportacion, nombreZip } = require('../services/exportarZip');
 
 const router = express.Router();
 
@@ -39,6 +40,24 @@ function validarDatosPresupuesto(body) {
 
 router.get('/', (req, res) => {
   res.json(listarPresupuestos());
+});
+
+router.get('/exportar', async (req, res, next) => {
+  try {
+    if (listarPresupuestos().length === 0) {
+      return res.status(409).json({ error: 'No hay presupuestos guardados para exportar.' });
+    }
+    const { archive, omitidos } = await generarZipExportacion();
+    res.setHeader('Content-Type', 'application/zip');
+    res.setHeader('Content-Disposition', `attachment; filename="${nombreZip()}"`);
+    if (omitidos.length > 0) {
+      res.setHeader('X-Presupuestos-Omitidos', omitidos.join(','));
+    }
+    archive.on('error', next);
+    archive.pipe(res);
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.get('/:id/pdf', async (req, res, next) => {
