@@ -155,6 +155,11 @@ button.peligro {
   background: var(--color-error);
 }
 
+button:disabled {
+  background: var(--color-estado-borrador);
+  cursor: default;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;

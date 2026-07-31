@@ -1,7 +1,16 @@
-import { listarPresupuestos, eliminarPresupuesto, cambiarEstadoPresupuesto } from '../api.js';
+import { listarPresupuestos, eliminarPresupuesto, cambiarEstadoPresupuesto, exportarPresupuestos } from '../api.js';
 import { escaparHtml, formatearEuro, formatearFecha, ESTADOS_PRESUPUESTO } from '../utils.js';
 
 const ESTADOS_EDITABLES = ESTADOS_PRESUPUESTO.filter((e) => e.clave !== 'caducado');
+
+function descargarBlob(blob, nombreArchivo) {
+  const url = URL.createObjectURL(blob);
+  const enlace = document.createElement('a');
+  enlace.href = url;
+  enlace.download = nombreArchivo;
+  enlace.click();
+  URL.revokeObjectURL(url);
+}
 
 export async function renderVistaListadoPresupuestos(contenedor) {
   async function render() {
@@ -9,7 +18,11 @@ export async function renderVistaListadoPresupuestos(contenedor) {
 
     contenedor.innerHTML = `
       <h2>Presupuestos</h2>
-      <p><a href="#/presupuesto/nuevo"><button type="button">+ Nuevo presupuesto</button></a></p>
+      <p>
+        <a href="#/presupuesto/nuevo"><button type="button">+ Nuevo presupuesto</button></a>
+        <button type="button" class="secundario" data-exportar-todo>Exportar todo (.zip)</button>
+      </p>
+      <p class="aviso-error" data-aviso-exportar hidden></p>
       ${
         presupuestos.length === 0
           ? '<p>Todavía no hay presupuestos.</p>'
@@ -56,6 +69,29 @@ export async function renderVistaListadoPresupuestos(contenedor) {
         await cambiarEstadoPresupuesto(id, nuevoEstado);
         render();
       });
+    });
+
+    const botonExportar = contenedor.querySelector('[data-exportar-todo]');
+    const avisoExportar = contenedor.querySelector('[data-aviso-exportar]');
+    botonExportar.addEventListener('click', async () => {
+      avisoExportar.hidden = true;
+      botonExportar.disabled = true;
+      const textoOriginal = botonExportar.textContent;
+      botonExportar.textContent = 'Generando copia…';
+      try {
+        const { blob, nombreArchivo, omitidos } = await exportarPresupuestos();
+        descargarBlob(blob, nombreArchivo);
+        if (omitidos.length > 0) {
+          avisoExportar.textContent = `No se pudieron incluir estos presupuestos: ${omitidos.join(', ')}.`;
+          avisoExportar.hidden = false;
+        }
+      } catch (error) {
+        avisoExportar.textContent = error.message;
+        avisoExportar.hidden = false;
+      } finally {
+        botonExportar.disabled = false;
+        botonExportar.textContent = textoOriginal;
+      }
     });
   }
 

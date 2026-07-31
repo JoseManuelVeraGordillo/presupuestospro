@@ -85,3 +85,19 @@ export async function cambiarEstadoPresupuesto(id, estado) {
 export async function eliminarPresupuesto(id) {
   return manejarRespuesta(await fetch(`${BASE}/presupuestos/${id}`, { method: 'DELETE' }));
 }
+
+export async function exportarPresupuestos() {
+  const respuesta = await fetch(`${BASE}/presupuestos/exportar`);
+  if (!respuesta.ok) {
+    const datos = await respuesta.json().catch(() => null);
+    throw new Error((datos && datos.error) || `Error ${respuesta.status}`);
+  }
+  const omitidosCabecera = respuesta.headers.get('X-Presupuestos-Omitidos');
+  const disposicion = respuesta.headers.get('Content-Disposition') || '';
+  const nombreArchivo = disposicion.match(/filename="([^"]+)"/)?.[1] || 'presupuestospro-copia.zip';
+  return {
+    blob: await respuesta.blob(),
+    nombreArchivo,
+    omitidos: omitidosCabecera ? omitidosCabecera.split(',') : [],
+  };
+}

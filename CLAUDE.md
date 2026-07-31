@@ -8,6 +8,9 @@ PresupuestosPro es una app web para que un freelancer cree presupuestos con su m
 - PDF: `pdfmake`, generado en servidor.
 - Un único proceso Express sirve API + estáticos. Sin cuentas de usuario ni multi-tenant (una instalación por freelancer). Config sensible (ruta BD, puerto) por variables de entorno, nunca en código.
 - Todo texto de cara al usuario en español de España; importes en euros con coma decimal (`formatearEuro`).
+- [003] `archiver` (backend) es la librería adoptada para generar ficheros .zip en streaming hacia la respuesta HTTP (`archive.pipe(res)`); Node no trae un escritor de ZIP de fábrica, y `archiver` es la opción sin binarios nativos consistente con el resto del stack.
+- [003] Para descargas binarias que el frontend debe pilotar (esperar a que terminen, leer cabeceras, distinguir error de éxito), el patrón es `fetch()` + `Blob` + `<a>` temporal con `URL.createObjectURL` en `api.js`, sin pasar por `manejarRespuesta` (que asume JSON) — no el `<a href>` estático que basta para descargas simples.
+- [003] Para adjuntar metadatos junto a una respuesta HTTP binaria (sin tocar su cuerpo), se usa una cabecera custom `X-<Nombre>` que el frontend lee con `respuesta.headers.get(...)`.
 
 ## Arrancar y probar en local
 ```bash
