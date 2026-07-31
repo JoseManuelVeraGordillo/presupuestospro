@@ -8,6 +8,29 @@
 
 **Input**: User description: "Exportar todos mis presupuestos en un .zip — que el freelancer pueda llevarse TODOS sus presupuestos de una sola vez, en un único archivo comprimido .zip, como copia de seguridad y para archivarlos donde quiera. Un botón 'Exportar todo (.zip)' visible en la lista de presupuestos descarga un único .zip con un PDF por cada presupuesto existente (idéntico al que ya genera la app) y un único archivo de datos con toda la información (presupuestos, catálogo, clientes y perfil, logo incluido) pensado para restaurar la aplicación en el futuro. Nombre del zip: presupuestospro-copia-AAAA-MM-DD.zip. Nombre de cada PDF: número + cliente. La exportación es solo lectura. Sin presupuestos, el botón avisa sin descargar zip vacío. Nombres de cliente con caracteres conflictivos se limpian para no romper el zip. Con 50+ presupuestos puede tardar pero debe verse que está trabajando. Fuera de alcance: importar la copia, exportar a Excel/CSV, copias automáticas/programadas, enviar por email o subir a la nube."
 
+## Clarifications
+
+### Session 2026-07-31
+
+- Q: Cuando dos presupuestos, tras limpiar caracteres conflictivos del nombre de
+  cliente, generan el mismo nombre de PDF, ¿cómo debe diferenciarlos el sistema para
+  evitar que uno sobrescriba al otro? (FR-009) → A: Sufijo numérico entre paréntesis
+  al final del nombre (por ejemplo, "2026-001 - Estudio García (2).pdf").
+- Q: Si al generar el PDF de uno de los presupuestos ocurre un error a mitad del
+  proceso de exportación, ¿qué debe pasar con el resto de la exportación? → A: Se
+  omite el presupuesto fallido, se continúa con el resto y, al finalizar, se avisa al
+  freelancer de qué presupuesto(s) no se pudieron incluir.
+- Q: Mientras la exportación está en curso, ¿qué debe pasar si el freelancer pulsa el
+  botón "Exportar todo (.zip)" otra vez antes de que termine la primera descarga? →
+  A: El botón se deshabilita mientras dura la exportación; un segundo clic no inicia
+  una nueva exportación.
+- Q: ¿En qué orden deben aparecer los PDF dentro del .zip generado? → A: Por número
+  de presupuesto, en orden ascendente.
+- Q: Si la exportación tarda demasiado, ¿debe existir un límite de tiempo a partir
+  del cual el sistema muestre un error en vez de dejar el indicador de progreso
+  girando indefinidamente? → A: No, sin límite de tiempo explícito; el indicador se
+  muestra hasta que la exportación termina, sea cual sea su duración.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Descargar una copia completa de todos los presupuestos (Priority: P1) 🎯 MVP
@@ -111,8 +134,13 @@ trabajando.
   ":", etc.): el nombre del PDF se limpia mantenimiento la legibilidad (número +
   cliente) sin romper el .zip (cubierto en User Story 3).
 - Dos o más presupuestos que, tras limpiar caracteres conflictivos, generarían el
-  mismo nombre de archivo: el sistema debe evitar que un PDF sobrescriba a otro
-  dentro del .zip.
+  mismo nombre de archivo: el sistema añade un sufijo numérico entre paréntesis al
+  final del nombre (por ejemplo, "2026-001 - Estudio García (2).pdf") para evitar que
+  un PDF sobrescriba a otro dentro del .zip.
+- Fallo al generar el PDF de un presupuesto concreto durante la exportación (por
+  ejemplo, datos corruptos en ese presupuesto): el sistema omite ese presupuesto,
+  continúa con el resto y, al finalizar, avisa al freelancer de qué presupuesto(s) no
+  se pudieron incluir en el .zip.
 - Volumen alto de presupuestos (50+): la exportación puede tardar más, pero el
   freelancer debe ver en todo momento que la aplicación sigue trabajando, sin límite
   máximo de presupuestos exportables.
@@ -130,7 +158,9 @@ trabajando.
   visible de la lista de presupuestos.
 - **FR-002**: Al pulsar el botón, el sistema DEBE generar y descargar un único
   archivo .zip que contenga un PDF por cada presupuesto existente, sea cual sea su
-  estado.
+  estado. Si la generación del PDF de un presupuesto concreto falla, el sistema DEBE
+  omitir ese presupuesto, continuar con el resto y, al finalizar, avisar al
+  freelancer de qué presupuesto(s) no se pudieron incluir.
 - **FR-003**: Cada PDF dentro del .zip DEBE ser exactamente el mismo documento
   (mismos importes, datos y formato) que la aplicación genera al descargar ese
   presupuesto de forma individual.
@@ -151,13 +181,21 @@ trabajando.
   cada PDF, de forma que el .zip se genere siempre sin errores.
 - **FR-009**: El sistema DEBE evitar colisiones de nombre entre PDF dentro del
   mismo .zip (por ejemplo, si la limpieza de caracteres produce el mismo nombre para
-  dos presupuestos distintos), garantizando que ningún PDF sobrescriba a otro.
+  dos presupuestos distintos), añadiendo un sufijo numérico entre paréntesis al final
+  del nombre (por ejemplo, "2026-001 - Estudio García (2).pdf") de forma que ningún
+  PDF sobrescriba a otro.
 - **FR-010**: Cuando no exista ningún presupuesto guardado, el sistema DEBE mostrar
   un aviso claro de que no hay nada que exportar y NO DEBE iniciar ninguna descarga.
 - **FR-011**: El sistema DEBE funcionar correctamente con cualquier volumen de
-  presupuestos existentes, desde 1 hasta 200 o más, sin imponer un límite máximo.
+  presupuestos existentes, desde 1 hasta 200 o más, sin imponer un límite máximo ni
+  un límite de tiempo explícito: el indicador de progreso (FR-012) se mantiene
+  visible durante toda la duración real del proceso, sea cual sea.
 - **FR-012**: Mientras dura la generación del .zip, el sistema DEBE mostrar al
-  freelancer un indicador de que la exportación está en curso.
+  freelancer un indicador de que la exportación está en curso y DEBE deshabilitar el
+  botón "Exportar todo (.zip)" durante ese tiempo, de forma que un segundo clic no
+  inicie una nueva exportación en paralelo.
+- **FR-013**: El sistema DEBE ordenar los PDF dentro del .zip por número de
+  presupuesto, en orden ascendente.
 
 ### Key Entities
 
