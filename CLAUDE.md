@@ -25,6 +25,7 @@ Tests: `cd backend && npm test` (Vitest, unit) y `npm run test:api` (Supertest, 
 - Cambios de alcance solo si están en una spec de `specs/`; nada de funcionalidad no pedida ("Cero Alcance Fantasma").
 - Toda desviación de la constitución se documenta en la sección "Complexity Tracking" del `plan.md` de la spec.
 
+- Cuando te pida "cerrar la feature", ejecuta: verificar working tree limpio y commitear pendientes, correr test (parar si fallan), checkout naster, merge --no-ff de la rama de ka feature cib mensaje "Merge feature NNN: <nombre>", borrar la rama local, y mostrar git log --oneline --graph -10.
 Las reglas de producto viven en .specify/memory/constitution.md y el estado del producto en specs/README.md.
 ## Spec-kit
 
