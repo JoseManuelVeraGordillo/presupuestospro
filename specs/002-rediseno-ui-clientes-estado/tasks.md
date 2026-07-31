@@ -102,19 +102,47 @@ No aplica: esta feature no crea ningún proyecto ni carpeta de primer nivel nuev
 
 **Checkpoint**: User Stories 1, 2 y 3 funcionan de forma independiente.
 
+### Actualización 2026-07-31 (dirección "Banca privada", FR-029 a FR-039)
+
+> Los tokens de T003/T016 se sustituyen por los valores exactos de
+> `contracts/identidad-visual.md`. No se repiten tareas ya hechas (T003-T020
+> siguen completadas); estas tareas son la diferencia entre lo ya construido
+> y la nueva dirección visual concreta.
+
+- [ ] T034 [US3] Añadir los ficheros `.woff2` de Inter (pesos 400/500/600) en `frontend/public/fonts/` y declarar `@font-face` en `frontend/src/styles/base.css`, sin añadir ninguna dependencia npm ni CDN externo (research.md punto 10; FR-030)
+- [ ] T035 [US3] Sustituir los valores de los tokens de color en `:root` de `frontend/src/styles/base.css` por los de `contracts/identidad-visual.md`: `--color-fondo` `#F7F8FA`, nuevo `--color-superficie` `#FFFFFF`, `--color-texto` `#0B1F3A`, nuevo `--color-texto-secundario` `#5B6B84`, `--color-primario` `#2E5AAC`, nuevo `--color-primario-oscuro` `#0B1F3A`, `--color-exito` `#1E7A4C`, `--color-error` `#B4232C`, nuevo `--color-alerta` `#9A6700`, `--color-borde` `#E1E4E9` (depends on T034, mismo fichero; FR-029)
+- [ ] T036 [US3] Cambiar `--radio` a `6px` en `frontend/src/styles/base.css` y aplicar `--color-superficie` como fondo de tarjetas/formularios (depends on T035, mismo fichero; FR-033)
+- [ ] T037 [US3] Sustituir el borde de `.lista-items li` por `box-shadow: 0 1px 2px rgba(11,31,58,0.06)` en `frontend/src/styles/base.css` (depends on T036, mismo fichero; FR-034)
+- [ ] T038 [US3] Reescribir `.badge-estado-*` en `frontend/src/styles/base.css` con la fórmula fondo-10/12%-opacidad + texto-100% del color de estado, añadiendo el color de Caducado (`--color-alerta`) que antes no existía como token propio (depends on T035, mismo fichero; FR-032)
+- [ ] T039 [US3] Aplicar `font-weight: 600` y `font-variant-numeric: tabular-nums` a los importes en euros en `frontend/src/styles/base.css` (clase de importe/total) y usarla en `frontend/src/views/listado-presupuestos.js` y `frontend/src/views/presupuesto.js` (depends on T035; FR-031)
+- [ ] T040 [US3] Añadir estados `:hover`/`:focus-visible` visibles (distintos del reposo) a `button`, `select`, `input` y `.navegacion a` en `frontend/src/styles/base.css` (depends on T035, mismo fichero; FR-036)
+- [ ] T041 [US3] Distinguir `button.peligro` ("Eliminar") de los botones no destructivos por más de un atributo (p. ej. icono o posición, además del color) en `frontend/src/styles/base.css` y en las vistas que lo usan (depends on T035, mismo fichero; FR-037)
+- [ ] T042 [P] [US3] Corregir `frontend/src/views/inicio.js`: los 4 accesos a Presupuestos/Clientes/Catálogo/Perfil deben usar una clase estilada (no un `<a>` sin clase, que hoy hereda el subrayado y el color azul/morado por defecto del navegador) (FR-038)
+- [ ] T043 [US3] Auditar `frontend/src/views/catalogo.js`, `clientes.js`, `perfil.js` y `presupuesto.js` en busca de cualquier `<a>` sin clase que pueda heredar el estilo por defecto del navegador, y aplicarles la clase/estilo de enlace ya definida (FR-038; no paralelizable con T039 — ambas tocan `presupuesto.js`)
+- [ ] T044 [US3] Definir un contenedor de ancho máximo consistente (reutilizar `.contenido` o equivalente) y aplicarlo también a `frontend/src/views/inicio.js`, para que ninguna vista quede con contenido sin centrar en escritorio ≥1280px (depends on T035, T042, mismos ficheros; FR-039)
+- [ ] T045 [US3] Distinguir el bloque de navegación/acciones primarias (p. ej. "+ Nuevo presupuesto", "Exportar todo (.zip)") del listado de datos por más de un atributo visual en `frontend/src/views/listado-presupuestos.js` y `frontend/src/styles/base.css` (depends on T035, T039, mismos ficheros; FR-035)
+- [ ] T046 [US3] Ejecutar la sección 3 (pasos 1-11) de `specs/002-rediseno-ui-clientes-estado/quickstart.md` y confirmar SC-006, SC-007, SC-009 y SC-010 (depends on T034-T045)
+
+**Checkpoint**: User Story 3 refleja la dirección visual "Banca privada" con valores exactos y verificables.
+
 ---
 
 ## Phase 6: User Story 4 - Recibir presupuestos en PDF con la misma imagen profesional (Priority: P2)
 
-**Goal**: El PDF descargado usa la misma tipografía y paleta de colores que la aplicación web, conservando exactamente la misma información.
+> **Retirada de esta spec (actualización 2026-07-31).** La dirección "Banca privada"
+> excluye el PDF de esta iteración (ver spec.md, User Story 4 retirada). T021 ya
+> estaba completada antes de esta actualización y se conserva como registro
+> histórico; no se añaden nuevas tareas de PDF en esta fase.
 
-**Independent Test**: Generar el PDF de un presupuesto con datos de ejemplo y comprobar visualmente que usa la misma tipografía y paleta que la aplicación, manteniendo toda la información que ya incluía.
+~~**Goal**: El PDF descargado usa la misma tipografía y paleta de colores que la aplicación web, conservando exactamente la misma información.~~
+
+~~**Independent Test**: Generar el PDF de un presupuesto con datos de ejemplo y comprobar visualmente que usa la misma tipografía y paleta que la aplicación, manteniendo toda la información que ya incluía.~~
 
 ### Implementation for User Story 4
 
-- [X] T021 [US4] Aplicar identidad visual al PDF: constante `PALETA_MARCA` sincronizada a mano con los tokens de `frontend/src/styles/base.css`, y tipografía consistente en el `docDefinition` de `backend/src/services/generarPdf.js`, sin añadir ni quitar ningún dato existente (depends on T016; FR-014, FR-015, research.md punto 6)
+- [X] T021 [US4] Aplicar identidad visual al PDF: constante `PALETA_MARCA` sincronizada a mano con los tokens de `frontend/src/styles/base.css`, y tipografía consistente en el `docDefinition` de `backend/src/services/generarPdf.js`, sin añadir ni quitar ningún dato existente (depends on T016; FR-014, FR-015 — ambos retirados, ver nota arriba; research.md punto 6 — retirado)
 
-**Checkpoint**: User Stories 1 a 4 funcionan de forma independiente.
+**Checkpoint**: User Stories 1 a 4 funcionan de forma independiente (T021 histórico; sin trabajo pendiente de PDF en esta actualización).
 
 ---
 
@@ -148,7 +176,8 @@ No aplica: esta feature no crea ningún proyecto ni carpeta de primer nivel nuev
 **Purpose**: Verificación final de que nada de lo existente se ha roto y de que se cumplen los criterios de éxito.
 
 - [X] T031 [P] Ejecutar `npm run test` y `npm run test:api` en `backend/` y confirmar que los tests ya existentes (`tests/unit`, `tests/api/perfil.test.js`, `tests/api/catalogo.test.js`, `tests/api/presupuestos.test.js`) siguen pasando sin haber sido modificados en su comportamiento (FR-013)
-- [X] T032 Ejecutar la validación manual completa de `specs/002-rediseno-ui-clientes-estado/quickstart.md` (secciones 1 a 5) y confirmar SC-001 a SC-008
+- [X] T032 Ejecutar la validación manual completa de `specs/002-rediseno-ui-clientes-estado/quickstart.md` (secciones 1 a 5) y confirmar SC-001 a SC-008 *(ejecutada antes de la actualización 2026-07-31; SC-008 quedó retirado después — ver T046 y T047 para la revalidación posterior a la dirección "Banca privada")*
+- [ ] T047 [P] Repetir la validación manual de `specs/002-rediseno-ui-clientes-estado/quickstart.md` (secciones 1, 2, 3 y 5 — la 4 está retirada) tras completar T034-T045, y confirmar SC-001 a SC-007, SC-009 y SC-010 (depends on T034-T046)
 - [X] T033 [P] Confirmar que `backend/src/db/migraciones.js` es idempotente: reiniciar el servidor con una base de datos ya migrada y comprobar que no falla ni intenta duplicar la tabla `clientes` ni la columna `estado`
 
 ---
@@ -169,7 +198,7 @@ No aplica: esta feature no crea ningún proyecto ni carpeta de primer nivel nuev
 
 - **US1 (P1)**: Depende de Foundational. Sin dependencias de otras historias (el resumen por estado ya recibe `estado` real gracias a T002).
 - **US2 (P1)**: Depende de Foundational. Independiente de US1/US3, aunque comparte tokens de color (T003).
-- **US3 (P1)**: Depende de Foundational. Independiente de US1/US2 en su implementación, aunque su Independent Test recorre también Inicio y el listado ya construidos por US1/US2.
+- **US3 (P1)**: Depende de Foundational. Independiente de US1/US2 en su implementación, aunque su Independent Test recorre también Inicio y el listado ya construidos por US1/US2. **Actualización 2026-07-31**: T034-T045 (dirección "Banca privada") no dependen de US1/US2/US4/US5, pero T042 toca `inicio.js` (US1) y T039/T045 tocan `listado-presupuestos.js`/`presupuesto.js` (US2), así que conviene aplicarlas con US1/US2 ya funcionando para no perder de vista una regresión cruzada.
 - **US4 (P2)**: Depende de Foundational y de T016 (US3).
 - **US5 (P2)**: Depende de Foundational (T001). Independiente del resto de historias.
 
@@ -187,6 +216,7 @@ No aplica: esta feature no crea ningún proyecto ni carpeta de primer nivel nuev
 - Dentro de US3: T017, T018 y T019 (ajustes por vista) en paralelo una vez completado T016.
 - Dentro de US5: T022 (modelo) en paralelo con el resto de Foundational; T025 (tests) y T026 (api.js frontend) en paralelo una vez completado T024.
 - Una vez completada Foundational, US1, US2, US3 y US5 pueden trabajarse en paralelo por distintas personas; US4 debe esperar a T016.
+- **Actualización 2026-07-31**: T034-T041 tocan todas el mismo fichero (`base.css`) de forma secuencial, sin paralelismo entre sí. T042 (`inicio.js`) es paralelizable con T034-T041. T043 (`catalogo.js`/`clientes.js`/`perfil.js`/`presupuesto.js`) es paralelizable con T034-T038, T040-T042, pero no con T039 (comparten `presupuesto.js`). T044 y T045 dependen de ficheros ya tocados por tareas anteriores y no son paralelizables. T046 es la validación final de esta actualización.
 
 ---
 
@@ -220,6 +250,8 @@ Task: "Funciones de clientes en frontend/src/api.js"
 5. US4 → PDF a juego (depende de US3).
 6. US5 → directorio de clientes.
 7. Polish → regresión de spec 001 + `quickstart.md` completo.
+8. *(2026-07-31)* Actualización "Banca privada" (T034-T047) → sustituye los tokens
+   genéricos de US3 por los valores exactos de FR-029 a FR-039, sin tocar el PDF.
 
 ### Parallel Team Strategy
 
@@ -234,3 +266,7 @@ Tras Foundational: una persona en US1, otra en US2, otra en US5 (todas independi
 - Cada historia de usuario debe poder completarse y probarse de forma independiente.
 - Ningún endpoint, cálculo ni comportamiento de la spec 001 (perfil, catálogo, presupuestos existentes) debe cambiar (FR-013) — verificado en T031.
 - Commit tras cada tarea o grupo lógico de tareas.
+- **Actualización 2026-07-31**: T034-T047 son la incorporación de la dirección visual
+  "Banca privada" (FR-029 a FR-039, `specs/pre-spec-rediseno-visual-banca-privada.md`).
+  T001-T033 ya estaban completadas antes de esta actualización y no se repiten. No hay
+  tareas para User Story 4 (PDF): queda retirada del alcance (ver spec, Assumptions).

@@ -8,6 +8,15 @@
 
 **Input**: User description: "Mejorar la presentación de PresupuestosPro (aplicación ya implementada en la spec 001) con cambios, alterar la funcionalidad, permíteme crear clientes, guardar clientes, ver clientes y borrar clientes. Primero: añadir una página de inicio (index) que sea el punto de entrada de la aplicación al acceder a la raíz del servidor, con navegación clara hacia las secciones existentes (Presupuestos, Clientes, Catálogo y Perfil) y un pequeño resumen de actividad (por ejemplo, número de presupuestos por estado). Además, todas las páginas deben compartir una navegación común visible para moverse entre secciones sin usar el botón atrás. Segundo: rediseñar la apariencia visual de toda la aplicación para que resulte profesional y sobria: tipografía consistente, paleta de colores limitada definida en un único lugar, espaciado uniforme, jerarquía visual clara entre títulos, tablas, formularios y totales, y estados visuales distinguibles para los presupuestos (Borrador, Enviado, Aceptado, Rechazado, Caducado). El rediseño debe aplicarse también a la plantilla del PDF para que el documento que recibe el cliente transmita la misma imagen profesional. Debe mantenerse el enfoque mobile-first ya existente y todos los textos en español de España. La lógica de negocio, los cálculos, la API y el esquema de datos no deben cambiar en absoluto."
 
+**Actualización 2026-07-31**: La sección de rediseño visual (User Story 3) se sustituye por
+la dirección de producto "Banca privada", detallada en
+`specs/pre-spec-rediseno-visual-banca-privada.md` (paleta, tipografía y demás tokens
+concretos, con criterios de aceptación verificables sí/no). Esa dirección **excluye
+explícitamente el PDF de esta iteración**; por eso User Story 4 y los requisitos FR-014/
+FR-015 quedan retirados de esta spec (ver nota en su sección y en Clarifications,
+sesión 2026-07-31). El resto del contenido de esta spec (página de inicio, estados de
+presupuesto, gestión de clientes) no se ve alterado por esta actualización.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Empezar en una página de inicio con navegación común (Priority: P1) 🎯 MVP
@@ -81,67 +90,100 @@ comprobar que pasa a Caducado automáticamente.
 
 ---
 
-### User Story 3 - Trabajar con un diseño visual profesional y coherente (Priority: P1)
+### User Story 3 - Trabajar con un diseño visual tipo "banca privada" (Priority: P1)
 
-Como freelancer, quiero que toda la aplicación tenga un aspecto profesional y
-sobrio, con tipografía, colores y espaciados coherentes entre pantallas, para
-transmitir una imagen de confianza a mí mismo y a mis clientes mientras trabajo,
-igual que espero transmitirla en el PDF que les envío.
+Como freelancer, quiero que toda la aplicación tenga el aspecto sobrio y solvente de
+un dashboard financiero (tipo Mercury o el panel de Stripe), con una única paleta de
+azules marinos, tipografía técnica consistente y componentes sin adornos, para
+transmitir la misma confianza que espero que mis clientes perciban en un extracto
+bancario o una factura de gestoría, no la de un prototipo sin estilar.
 
 **Why this priority**: Es el segundo cambio explícitamente pedido y el motivo
 principal de esta mejora; sin él, la página de inicio y los estados de presupuesto
-seguirían conviviendo con una apariencia inconsistente en el resto de pantallas.
+seguirían conviviendo con una apariencia inconsistente en el resto de pantallas. La
+dirección concreta ("Banca privada") y sus valores exactos están fijados en
+`specs/pre-spec-rediseno-visual-banca-privada.md`.
 
 **Independent Test**: Puede probarse recorriendo todas las pantallas existentes
-(inicio, presupuestos, clientes, catálogo, perfil) y comprobando que comparten la
-misma tipografía, la misma paleta de colores, el mismo espaciado y la misma forma de
-distinguir títulos, tablas, formularios y totales; y comprobando que la aplicación
+(inicio, presupuestos, clientes, catálogo, perfil) e inspeccionando directamente sus
+valores: color exacto de fondo/texto/acento, familia tipográfica, radio de esquina,
+tratamiento de tarjetas (sombra) y estados `:hover`/`:focus`, comprobando que
+coinciden con los tokens fijados en FR-029 a FR-039; y comprobando que la aplicación
 sigue siendo usable desde una pantalla de móvil estrecha.
 
 **Acceptance Scenarios**:
 
-1. **Given** cualquier pantalla de la aplicación, **When** el freelancer la compara
-   con otra pantalla, **Then** ambas usan la misma tipografía y la misma paleta de
-   colores limitada.
-2. **Given** una pantalla con un título, una tabla, un formulario y un total (p. ej.
-   el detalle de un presupuesto), **When** el freelancer la mira, **Then** puede
-   distinguir claramente cada elemento por su jerarquía visual (el total resalta
-   sobre las líneas, el título resalta sobre el contenido, etc.).
-3. **Given** presupuestos en distintos estados, **When** el freelancer los ve en un
-   listado, **Then** cada estado (Borrador, Enviado, Aceptado, Rechazado, Caducado)
-   tiene un color o etiqueta distinguible y consistente en toda la aplicación.
-4. **Given** la aplicación abierta en un móvil de pantalla estrecha, **When** el
-   freelancer recorre cualquier pantalla, **Then** el contenido se ve y se usa
-   correctamente, sin scroll horizontal ni elementos cortados.
-5. **Given** un presupuesto con base imponible, IVA, retención y total, **When** el
-   freelancer lo consulta antes y después del rediseño, **Then** las cifras
-   mostradas son exactamente las mismas (el rediseño no cambia ningún cálculo).
+1. **Given** cualquier enlace de la interfaz, **When** el freelancer lo inspecciona,
+   **Then** no muestra el subrayado ni el color azul/morado por defecto del
+   navegador; usa los colores de la paleta definida (FR-029, FR-038).
+2. **Given** cualquier texto de la aplicación, **When** se compara su tipografía,
+   **Then** todos usan la familia Inter (pesos 400/500/600), sin depender de la
+   fuente del sistema como familia principal (FR-030).
+3. **Given** un importe en euros mostrado en un listado, un desglose o un total,
+   **When** el freelancer lo mira, **Then** aparece en peso 600 con cifras
+   tabulares, nunca en gris ni en peso normal (FR-031).
+4. **Given** presupuestos en distintos estados, **When** el freelancer los ve como
+   badge en cualquier lugar (listado, detalle, resumen de inicio), **Then** cada
+   badge usa fondo del color de estado al 10-12% de opacidad y texto del mismo color
+   al 100%, con los valores exactos de la paleta (FR-032), y no con colores sueltos
+   ajenos a ella.
+5. **Given** cualquier botón, campo de formulario o tarjeta, **When** el freelancer
+   los compara entre pantallas, **Then** todos comparten el mismo radio de esquina
+   (FR-033) y las tarjetas de lista se diferencian del fondo mediante sombra, no solo
+   borde (FR-034).
+6. **Given** el bloque de navegación/acciones primarias y el bloque de datos en una
+   misma pantalla (p. ej. "+ Nuevo presupuesto" frente al listado de presupuestos),
+   **When** el freelancer los compara, **Then** se distinguen por más de un atributo
+   visual, no solo por el color de relleno (FR-035).
+7. **Given** cualquier botón, `select` o pestaña de navegación, **When** recibe el
+   foco o el cursor pasa por encima, **Then** su aspecto cambia de forma visible
+   respecto al estado en reposo (FR-036).
+8. **Given** una acción destructiva como "Eliminar", **When** se muestra junto a
+   acciones no destructivas, **Then** se distingue por el color de error y por al
+   menos un atributo adicional, no solo por el color (FR-037).
+9. **Given** cualquier pantalla en una resolución de escritorio de 1280px o más,
+   **When** el freelancer la observa, **Then** el contenido está contenido en un
+   ancho máximo consistente y centrado, sin vacíos sin estructurar junto al
+   contenido (FR-039).
+10. **Given** la aplicación abierta en un móvil de pantalla estrecha, **When** el
+    freelancer recorre cualquier pantalla, **Then** el contenido se ve y se usa
+    correctamente, sin scroll horizontal ni elementos cortados.
+11. **Given** un presupuesto con base imponible, IVA, retención y total, **When** el
+    freelancer lo consulta antes y después del rediseño, **Then** las cifras
+    mostradas son exactamente las mismas (el rediseño no cambia ningún cálculo).
 
 ---
 
 ### User Story 4 - Recibir presupuestos en PDF con la misma imagen profesional (Priority: P2)
 
+> **Retirada de esta spec (actualización 2026-07-31).** La dirección "Banca privada"
+> (`specs/pre-spec-rediseno-visual-banca-privada.md`) excluye explícitamente el PDF
+> de esta iteración: el rediseño se limita a la interfaz web. Esta User Story y los
+> requisitos FR-014/FR-015 se conservan aquí tachados como registro histórico de lo
+> que se pidió originalmente, pero no forman parte del alcance actual. Alinear el PDF
+> con la nueva identidad visual requeriría una spec propia (ver "Assumptions").
+
 Como freelancer, quiero que el PDF que descargo y envío a mis clientes tenga el
 mismo aspecto profesional y sobrio que la aplicación, para que la imagen que reciben
 mis clientes sea coherente con la que yo mismo veo al trabajar.
 
-**Why this priority**: Extiende el rediseño (User Story 3) al documento final que
+~~**Why this priority**: Extiende el rediseño (User Story 3) al documento final que
 llega al cliente; aporta valor una vez que la identidad visual de la aplicación ya
-está definida, pero puede probarse de forma independiente descargando un PDF.
+está definida, pero puede probarse de forma independiente descargando un PDF.~~
 
-**Independent Test**: Puede probarse generando el PDF de un presupuesto con datos de
+~~**Independent Test**: Puede probarse generando el PDF de un presupuesto con datos de
 ejemplo y comprobando visualmente que usa la misma tipografía y paleta de colores
-que la aplicación, manteniendo toda la información que ya incluía.
+que la aplicación, manteniendo toda la información que ya incluía.~~
 
-**Acceptance Scenarios**:
+~~**Acceptance Scenarios**:~~
 
-1. **Given** un presupuesto con datos completos, **When** el freelancer descarga su
+~~1. **Given** un presupuesto con datos completos, **When** el freelancer descarga su
    PDF, **Then** el documento usa la misma tipografía y paleta de colores que la
-   aplicación web.
-2. **Given** el PDF descargado, **When** el freelancer lo compara con la versión
+   aplicación web.~~
+~~2. **Given** el PDF descargado, **When** el freelancer lo compara con la versión
    anterior al rediseño, **Then** contiene exactamente la misma información (logo,
    datos del freelancer, datos del cliente, número, fechas, líneas y desglose de
-   importes), solo con una presentación distinta.
+   importes), solo con una presentación distinta.~~
 
 ---
 
@@ -248,6 +290,27 @@ cliente guardado y que sus datos rellenan el presupuesto.
   presupuesto, el listado de presupuestos ofrece una acción rápida para cambiar el
   estado sin necesidad de abrirlo.
 
+### Session 2026-07-31
+
+- Q: El usuario aportó un documento de pre-especificación propio
+  (`specs/pre-spec-rediseno-visual-banca-privada.md`) que fija una dirección visual
+  concreta ("Banca privada": paleta de azules marinos, tipografía Inter, radio de
+  esquina 6px, tarjetas con sombra) y que excluye explícitamente el PDF de esta
+  iteración. ¿Se sustituye la User Story 3 (antes genérica: "tipografía consistente",
+  "paleta limitada") por esta dirección concreta, y se retira la User Story 4/FR-014/
+  FR-015 del alcance? → A: Sí a ambas. La User Story 3 y los FR-006 a FR-013 se
+  mantienen como marco general, ampliados con los nuevos FR-029 a FR-039 que fijan
+  los valores exactos de la dirección "Banca privada"; la User Story 4 y FR-014/
+  FR-015 quedan retirados de esta spec (marcados como histórico) porque el PDF no
+  forma parte de esta dirección visual.
+- Q: Los valores concretos (colores hexadecimales, radio de esquina en píxeles,
+  familia tipográfica) que resuelven ambigüedades ya señaladas en
+  `checklists/visual-pdf.md` (CHK006, CHK007, CHK008, CHK030) — ¿deben incorporarse
+  como requisitos funcionales nuevos (verificables sí/no) o quedar solo en el
+  documento de pre-spec, fuera de la spec formal? → A: Como requisitos funcionales
+  nuevos dentro de la spec (FR-029 a FR-039), citando el documento de pre-spec como
+  fuente, para que sean verificables igual que el resto de FR de esta spec.
+
 ## Requirements *(mandatory)*
 
 ### Functional Requirements
@@ -290,14 +353,22 @@ cliente guardado y que sus datos rellenan el presupuesto.
   ni el comportamiento existente de la API de presupuestos, perfil y catálogo
   descritos en la spec 001.
 
+> Los valores exactos (colores, tipografía, radio, sombra, foco, ancho de
+> contenido) que hacen verificables FR-006 a FR-010 y FR-013 están fijados en
+> **FR-029 a FR-039**, más abajo, correspondientes a la dirección "Banca privada".
+
 **Rediseño del PDF**
 
-- **FR-014**: El documento PDF generado MUST usar la misma identidad visual
-  (tipografía y paleta de colores) que la aplicación web rediseñada.
-- **FR-015**: El rediseño del PDF MUST conservar toda la información que ya incluía
-  (logo si existe, datos del freelancer, datos del cliente, número de presupuesto,
-  fecha de emisión, fecha de validez, tabla de líneas y desglose de importes), sin
-  añadir ni quitar datos, solo cambiando su presentación visual.
+> **Retirados de esta spec (actualización 2026-07-31).** Ver nota en User Story 4:
+> la dirección "Banca privada" excluye el PDF de esta iteración. Se conservan
+> tachados como registro histórico.
+
+~~**FR-014**: El documento PDF generado MUST usar la misma identidad visual
+(tipografía y paleta de colores) que la aplicación web rediseñada.~~
+~~**FR-015**: El rediseño del PDF MUST conservar toda la información que ya incluía
+(logo si existe, datos del freelancer, datos del cliente, número de presupuesto,
+fecha de emisión, fecha de validez, tabla de líneas y desglose de importes), sin
+añadir ni quitar datos, solo cambiando su presentación visual.~~
 
 **Gestión de clientes**
 
@@ -342,6 +413,50 @@ cliente guardado y que sus datos rellenan el presupuesto.
   desde su detalle como mediante una acción rápida en el listado de presupuestos,
   sin necesidad de abrirlo.
 
+**Dirección visual concreta: "Banca privada" (actualización 2026-07-31)**
+
+> Fuente: `specs/pre-spec-rediseno-visual-banca-privada.md`. Estos requisitos fijan
+> con valores exactos y verificables lo que FR-006 a FR-010 y FR-013 dejaban a
+> criterio de diseño abierto. Aplican solo a la interfaz web (ver nota de alcance en
+> "Rediseño del PDF").
+
+- **FR-029**: El sistema MUST usar exactamente la siguiente paleta como fuente única
+  de verdad para toda la interfaz web: fondo general `#F7F8FA`, superficie
+  (tarjetas/formularios) `#FFFFFF`, texto principal `#0B1F3A`, texto secundario
+  `#5B6B84`, color primario `#2E5AAC`, primario oscuro/hover `#0B1F3A`, éxito
+  `#1E7A4C`, error `#B4232C`, alerta `#9A6700`, borde `#E1E4E9`.
+- **FR-030**: El sistema MUST usar la familia tipográfica Inter (pesos 400, 500 y
+  600) como familia primaria en toda la interfaz web, sin depender de la fuente del
+  sistema como familia principal.
+- **FR-031**: El sistema MUST mostrar los importes en euros (listados, desgloses,
+  totales) en peso 600 con cifras tabulares (`tabular-nums`), nunca en texto
+  secundario ni en peso normal.
+- **FR-032**: El sistema MUST mostrar cada badge de estado de presupuesto con fondo
+  del color de estado correspondiente al 10-12% de opacidad y texto del mismo color
+  al 100%, usando exclusivamente los colores de FR-029 (Borrador: texto secundario;
+  Enviado: `#2E5AAC`; Aceptado: `#1E7A4C`; Rechazado: `#B4232C`; Caducado:
+  `#9A6700`); MUST NOT introducir colores de estado ajenos a esta tabla.
+- **FR-033**: El sistema MUST aplicar un radio de esquina uniforme de 6px a
+  botones, campos de formulario y tarjetas en toda la aplicación.
+- **FR-034**: El sistema MUST diferenciar las tarjetas de lista (presupuestos,
+  clientes, catálogo) del fondo general mediante sombra (`box-shadow`), no
+  únicamente mediante borde.
+- **FR-035**: El sistema MUST distinguir visualmente, mediante más de un atributo
+  (p. ej. color de fondo y elevación, no solo el color de relleno), el bloque de
+  navegación/acciones primarias del bloque de datos en cada pantalla.
+- **FR-036**: El sistema MUST mostrar un estado `:hover`/`:focus-visible`
+  visualmente distinto del estado en reposo en todo botón, campo `select` y
+  pestaña de navegación.
+- **FR-037**: El sistema MUST distinguir las acciones destructivas (p. ej.
+  "Eliminar") de las no destructivas mediante el color de error definido en FR-029
+  y al menos un atributo adicional (posición, énfasis o icono), no solo el color.
+- **FR-038**: El sistema MUST NOT dejar ningún enlace con el estilo por defecto del
+  navegador (subrayado o color azul/morado de visitado); todo enlace MUST usar los
+  colores de la paleta de FR-029.
+- **FR-039**: El sistema MUST contener el contenido de cada vista en un ancho
+  máximo consistente y centrado en resoluciones de escritorio de 1280px o más, sin
+  vacíos sin estructurar junto al contenido.
+
 ### Key Entities *(include if feature involves data)*
 
 - **Cliente**: nombre/razón social y tipo (empresa/autónomo o particular) de un
@@ -378,9 +493,17 @@ cliente guardado y que sus datos rellenan el presupuesto.
 - **SC-007**: Todas las pantallas, incluida la página de inicio y la gestión de
   clientes, se usan correctamente desde un móvil de pantalla estrecha, sin scroll
   horizontal ni elementos cortados.
-- **SC-008**: Un freelancer, al comparar la aplicación web y el PDF descargado de un
-  mismo presupuesto, reconoce a simple vista que comparten la misma tipografía y
-  paleta de colores.
+- ~~**SC-008**: Un freelancer, al comparar la aplicación web y el PDF descargado de
+  un mismo presupuesto, reconoce a simple vista que comparten la misma tipografía y
+  paleta de colores.~~ *(Retirado 2026-07-31: el PDF queda fuera de alcance de esta
+  iteración visual; ver User Story 4.)*
+- **SC-009**: Un freelancer identifica el estado de un presupuesto y su importe
+  total de un vistazo (en menos de 2 segundos), sin necesidad de leer ninguna
+  etiqueta de texto, en el 100% de los presupuestos mostrados en un listado.
+- **SC-010**: Una auditoría visual completa de las 5 pantallas existentes (inicio,
+  presupuestos, clientes, catálogo, perfil) no encuentra ningún elemento con un
+  estilo de navegador por defecto sin intervenir (enlaces subrayados en azul/
+  morado, controles nativos sin estilar).
 
 ## Assumptions
 
@@ -408,3 +531,12 @@ cliente guardado y que sus datos rellenan el presupuesto.
   (ambos confirmados explícitamente como necesarios para esta mejora), el resto de
   la lógica de negocio, cálculos, numeración, API y esquema de datos descritos en la
   spec 001 permanecen sin cambios.
+- El rediseño visual de esta iteración (dirección "Banca privada",
+  `specs/pre-spec-rediseno-visual-banca-privada.md`) se limita a la interfaz web; el
+  documento PDF generado con pdfmake no se modifica en esta spec y conserva su
+  apariencia actual hasta que exista una spec propia para alinearlo (ver User
+  Story 4, retirada).
+- Los valores exactos de color, tipografía, radio de esquina y demás tokens de
+  FR-029 a FR-039 proceden íntegramente del documento de pre-spec aportado por el
+  usuario; ese documento queda como referencia de diseño para `/speckit-plan`, no
+  solo como insumo de esta spec.
