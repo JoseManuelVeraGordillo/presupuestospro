@@ -1,14 +1,46 @@
-:root {
-  --color-primario: #1d4e89;
-  --color-texto: #1a1a1a;
-  --color-fondo: #ffffff;
-  --color-borde: #d0d5dd;
-  --color-error: #b3261e;
-  --color-exito: #1e7b34;
-  --radio: 8px;
-  --espacio: 1rem;
+/* Tipografía Inter auto-alojada (FR-030, research.md punto 10): un único
+   fichero de subconjunto latino con soporte de variable font para los
+   pesos 400/500/600, sin dependencia npm ni CDN externo. */
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter-Variable.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter-Variable.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter-Variable.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
 
-  /* Escala tipográfica (FR-006) */
+:root {
+  /* Paleta "Banca privada" (FR-029, contracts/identidad-visual.md) */
+  --color-fondo: #f7f8fa;
+  --color-superficie: #ffffff;
+  --color-texto: #0b1f3a;
+  --color-texto-secundario: #5b6b84;
+  --color-primario: #2e5aac;
+  --color-primario-oscuro: #0b1f3a;
+  --color-borde: #e1e4e9;
+  --color-error: #b4232c;
+  --color-exito: #1e7a4c;
+  --color-alerta: #9a6700;
+  --radio: 6px;
+  --espacio: 1rem;
+  --sombra-tarjeta: 0 1px 2px rgba(11, 31, 58, 0.06);
+
+  /* Escala tipográfica (FR-006, FR-030) */
+  --fuente-principal: 'Inter', system-ui, sans-serif;
   --texto-titulo: 1.5rem;
   --texto-subtitulo: 1.15rem;
   --texto-cuerpo: 1rem;
@@ -24,17 +56,18 @@
   --espacio-lg: 1.5rem;
   --espacio-xl: 2rem;
 
-  /* Colores por estado de presupuesto (FR-010, contracts/identidad-visual.md) */
-  --color-estado-borrador: #667085;
-  --color-estado-borrador-fondo: #f2f4f7;
-  --color-estado-enviado: #1d4e89;
-  --color-estado-enviado-fondo: #e8eefb;
+  /* Colores por estado de presupuesto (FR-010, FR-032, contracts/identidad-visual.md):
+     fondo = color de estado al 10-12% de opacidad, texto = color de estado al 100% */
+  --color-estado-borrador: var(--color-texto-secundario);
+  --color-estado-borrador-fondo: rgba(91, 107, 132, 0.12);
+  --color-estado-enviado: var(--color-primario);
+  --color-estado-enviado-fondo: rgba(46, 90, 172, 0.12);
   --color-estado-aceptado: var(--color-exito);
-  --color-estado-aceptado-fondo: #e6f4ea;
+  --color-estado-aceptado-fondo: rgba(30, 122, 76, 0.12);
   --color-estado-rechazado: var(--color-error);
-  --color-estado-rechazado-fondo: #fbe9e7;
-  --color-estado-caducado: #9a6700;
-  --color-estado-caducado-fondo: #fdf0d5;
+  --color-estado-rechazado-fondo: rgba(180, 35, 44, 0.12);
+  --color-estado-caducado: var(--color-alerta);
+  --color-estado-caducado-fondo: rgba(154, 103, 0, 0.12);
 }
 
 * {
@@ -43,10 +76,20 @@
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--fuente-principal);
   color: var(--color-texto);
   background: var(--color-fondo);
   line-height: 1.4;
+}
+
+a {
+  color: var(--color-primario);
+  text-decoration: none;
+}
+
+a:hover,
+a:focus-visible {
+  text-decoration: underline;
 }
 
 .cabecera {
@@ -72,25 +115,31 @@ body {
   display: inline-flex;
   align-items: center;
   border-radius: var(--radio);
-  background: #f2f4f7;
+  background: var(--color-fondo);
+  border: 1px solid var(--color-borde);
   color: var(--color-texto);
   text-decoration: none;
   font-size: 1rem;
 }
 
-.navegacion a:hover,
-.navegacion a:focus {
-  background: #e4e7ec;
+.navegacion a:hover {
+  background: var(--color-borde);
+}
+
+.navegacion a:focus-visible {
+  outline: 2px solid var(--color-primario);
+  outline-offset: 1px;
 }
 
 .navegacion a.activo {
   background: var(--color-primario);
+  border-color: var(--color-primario);
   color: #fff;
 }
 
 .contenido {
   padding: var(--espacio-md);
-  max-width: 720px;
+  max-width: 960px;
   margin: 0 auto;
 }
 
@@ -129,6 +178,21 @@ textarea {
   border: 1px solid var(--color-borde);
   border-radius: var(--radio);
   width: 100%;
+  background: var(--color-superficie);
+  color: var(--color-texto);
+}
+
+input:hover,
+select:hover {
+  border-color: var(--color-texto-secundario);
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-primario);
+  outline-offset: 1px;
+  border-color: var(--color-primario);
 }
 
 select {
@@ -137,6 +201,7 @@ select {
 
 button {
   font-size: var(--texto-cuerpo);
+  font-weight: var(--peso-destacado);
   padding: var(--espacio-sm) var(--espacio-md);
   min-height: 44px;
   border-radius: var(--radio);
@@ -146,13 +211,41 @@ button {
   cursor: pointer;
 }
 
-button.secundario {
-  background: #f2f4f7;
-  color: var(--color-texto);
+button:hover {
+  background: var(--color-primario-oscuro);
 }
 
+button:focus-visible {
+  outline: 2px solid var(--color-primario-oscuro);
+  outline-offset: 2px;
+}
+
+button.secundario {
+  background: var(--color-fondo);
+  color: var(--color-texto);
+  border: 1px solid var(--color-borde);
+}
+
+button.secundario:hover {
+  background: var(--color-borde);
+}
+
+/* Acción destructiva: además del color de error, un icono de advertencia y
+   un pequeño espacio la distinguen de los botones no destructivos (FR-037) */
 button.peligro {
   background: var(--color-error);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+button.peligro::before {
+  content: '⚠';
+  font-size: 0.9em;
+}
+
+button.peligro:hover {
+  background: #8f1c23;
 }
 
 button:disabled {
@@ -186,14 +279,16 @@ td {
 .desglose {
   margin-top: var(--espacio-md);
   padding: var(--espacio-md);
-  border: 1px solid var(--color-borde);
+  background: var(--color-superficie);
   border-radius: var(--radio);
+  box-shadow: var(--sombra-tarjeta);
 }
 
 .desglose .total {
   font-size: var(--texto-titulo);
   font-weight: var(--peso-titulo);
-  color: var(--color-primario);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-primario-oscuro);
 }
 
 .aviso-error {
@@ -212,7 +307,8 @@ td {
 
 .lista-items li {
   padding: 0.75rem;
-  border: 1px solid var(--color-borde);
+  background: var(--color-superficie);
+  box-shadow: var(--sombra-tarjeta);
   border-radius: var(--radio);
   display: flex;
   justify-content: space-between;
@@ -230,6 +326,39 @@ td {
 .acciones select {
   width: auto;
   min-width: 9rem;
+}
+
+/* Accesos de la página de inicio: enlace de clase propia, no un <a> suelto,
+   ocupa toda la tarjeta y no depende solo del reset global de <a> (FR-038) */
+.acceso-seccion {
+  flex: 1;
+  font-weight: var(--peso-destacado);
+}
+
+.acceso-seccion:hover,
+.acceso-seccion:focus-visible {
+  text-decoration: underline;
+}
+
+/* Importes en euros: siempre destacados y con cifras alineadas (FR-031) */
+.importe {
+  font-weight: var(--peso-destacado);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-texto);
+}
+
+/* Bloque de acciones principales de una vista (p. ej. "+ Nuevo presupuesto"),
+   distinguido del listado de datos por más de un atributo: fondo de
+   superficie + sombra, no solo el color de los botones (FR-035) */
+.acciones-principales {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding: var(--espacio-sm);
+  margin-bottom: var(--espacio-md);
+  background: var(--color-superficie);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra-tarjeta);
 }
 
 .badge-estado {

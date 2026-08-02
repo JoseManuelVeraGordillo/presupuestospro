@@ -57,9 +57,9 @@ export async function renderVistaPresupuesto(contenedor, params) {
     const nodo = contenedor.querySelector('#desglose-contenido');
     if (nodo) {
       nodo.innerHTML = `
-        <p>Base imponible: ${formatearEuro(desglose.baseImponible)}</p>
-        <p>IVA (${estado.tipoIva}%): ${formatearEuro(desglose.iva)}</p>
-        ${desglose.retencion > 0 ? `<p>Retención: −${formatearEuro(desglose.retencion)}</p>` : ''}
+        <p>Base imponible: <span class="importe">${formatearEuro(desglose.baseImponible)}</span></p>
+        <p>IVA (${estado.tipoIva}%): <span class="importe">${formatearEuro(desglose.iva)}</span></p>
+        ${desglose.retencion > 0 ? `<p>Retención: <span class="importe">−${formatearEuro(desglose.retencion)}</span></p>` : ''}
         <p class="total">Total: ${formatearEuro(desglose.total)}</p>
       `;
     }
