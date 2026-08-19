@@ -6,6 +6,15 @@
 
 **Note**: This template is filled in by the `/speckit-plan` command; its definition describes the execution workflow.
 
+**Actualización 2026-07-31**: La parte de rediseño visual de este plan (Technical
+Context, Constitution Check y Project Structure en lo referente a `base.css` y
+`generarPdf.js`) se actualiza para reflejar la dirección concreta "Banca privada"
+(FR-029 a FR-039 de la spec, detallados en
+`specs/pre-spec-rediseno-visual-banca-privada.md`). El resto del plan (clientes,
+estado, home, navegación) no cambia. El PDF queda explícitamente fuera de esta
+iteración: las referencias a `generarPdf.js`/`PALETA_MARCA` de la versión anterior
+de este plan se marcan como retiradas, no se ejecutan.
+
 ## Summary
 
 PresupuestosPro (spec 001) ya funciona: un freelancer crea presupuestos,
@@ -13,13 +22,15 @@ mantiene un catálogo y un perfil, y descarga PDFs, todo servido por un único
 proceso Node.js/Express con SQLite y un frontend vanilla JS servido como
 estáticos. Esta iteración no cambia esa arquitectura ni la lógica de cálculo:
 añade una página de inicio y una navegación común (para no depender del
-botón atrás), rediseña visualmente la aplicación y el PDF con una paleta y
-tipografía coherentes, añade un directorio de clientes reutilizable (CRUD) y
-añade un campo de estado al presupuesto (Borrador/Enviado/Aceptado/
-Rechazado, con Caducado calculado). Todo se construye extendiendo los
-patrones ya existentes (funciones planas por entidad, sin ORM, sin
-framework de frontend, tokens CSS en `:root`), sin introducir piezas de
-infraestructura nuevas.
+botón atrás), rediseña visualmente la aplicación **web** (no el PDF, ver
+actualización 2026-07-31) con la dirección concreta "Banca privada" (paleta
+de azules marinos, tipografía Inter, radio 6px, tarjetas con sombra — FR-029
+a FR-039), añade un directorio de clientes reutilizable (CRUD) y añade un
+campo de estado al presupuesto (Borrador/Enviado/Aceptado/Rechazado, con
+Caducado calculado). Todo se construye extendiendo los patrones ya
+existentes (funciones planas por entidad, sin ORM, sin framework de
+frontend, tokens CSS en `:root`), sin introducir piezas de infraestructura
+nuevas.
 
 ## Technical Context
 
@@ -35,6 +46,11 @@ de lo que hace Vite en build).
   como herramienta de build/dev.
 - No se añade ninguna dependencia nueva para esta feature (ni librería de
   componentes, ni gestor de estado, ni librería de diseño/CSS).
+- **Actualización 2026-07-31**: La tipografía Inter (FR-030) se sirve
+  auto-alojada como ficheros `.woff2` estáticos en `frontend/public/fonts/`
+  con `@font-face` en `base.css`, sin añadir ningún paquete npm (ni
+  `@fontsource/inter` ni similar) ni cargarla desde un CDN externo (ver
+  research.md, punto 10).
 
 **Storage**: SQLite, fichero único (`backend/data/presupuestospro.db`),
 gestionado con SQL directo (sin ORM). Se amplía con una tabla `clientes`
@@ -77,8 +93,8 @@ Clientes) y amplía 2 existentes (listado y detalle de presupuestos).
 |---|---|---|
 | I. Simplicidad Ante Todo | Se reutilizan los patrones ya existentes (funciones planas por entidad sin ORM, SQL directo, frontend vanilla, tokens CSS en `:root`). No se introduce ningún framework, librería de diseño ni infraestructura nueva; el directorio de clientes sigue el mismo patrón que `catalogo`, y el estado se deriva en lectura (sin *cron jobs* para "caducar" presupuestos). | ✅ PASS |
 | II. Idioma y Mercado (Español de España, Euro) | Los textos nuevos (Inicio, Clientes, etiquetas de estado) están en español de España; los importes siguen formateándose con `formatearEuro` (es-ES, coma decimal). | ✅ PASS |
-| III. Cero Alcance Fantasma | Solo se construye lo que confirma la spec 002 (clarificado explícitamente con el usuario): página de inicio, navegación común, rediseño visual, PDF a juego, clientes y estado. Quedan fuera notificaciones, envío de email, historial de estados e import/export masivo de clientes, tal como fijan las Assumptions de la spec. | ✅ PASS |
-| IV. Verificable por una Persona No Técnica | Todos los criterios de éxito (navegación, resumen de la home, colores por estado, mobile, PDF a juego, cálculo sin cambios) se verifican a mano desde la interfaz, documentado en quickstart.md. | ✅ PASS |
+| III. Cero Alcance Fantasma | Solo se construye lo que confirma la spec 002 (clarificado explícitamente con el usuario): página de inicio, navegación común, rediseño visual, clientes y estado. *(Actualización 2026-07-31: "PDF a juego" retirado del alcance — ver nota bajo esta tabla.)* Quedan fuera notificaciones, envío de email, historial de estados e import/export masivo de clientes, tal como fijan las Assumptions de la spec. | ✅ PASS |
+| IV. Verificable por una Persona No Técnica | Todos los criterios de éxito (navegación, resumen de la home, colores por estado, mobile, cálculo sin cambios) se verifican a mano desde la interfaz, documentado en quickstart.md. *(PDF retirado de esta lista, actualización 2026-07-31.)* | ✅ PASS |
 | V. Respeto por los Datos del Usuario | El directorio de clientes solo guarda nombre/razón social y tipo (lo mínimo ya usado hoy para un cliente); ningún secreto nuevo se introduce en código (la ruta de la BD sigue viniendo de `DB_PATH`, variable de entorno). | ✅ PASS |
 
 **Re-comprobación tras el diseño (Fase 1)**: research.md, data-model.md,
@@ -86,6 +102,13 @@ contracts/ y quickstart.md confirman que no se introduce ninguna pieza de
 infraestructura nueva ni ninguna funcionalidad fuera de la spec 002; los 5
 principios se mantienen en ✅ PASS. No hay ninguna desviación que registrar
 en "Complexity Tracking".
+
+**Re-comprobación tras la actualización 2026-07-31** (dirección "Banca
+privada", FR-029 a FR-039): sigue sin introducirse infraestructura nueva —
+Inter se auto-aloja como ficheros estáticos, sin paquete npm ni CDN (ver
+Technical Context); el PDF queda explícitamente fuera de esta iteración
+(Principio III, Cero Alcance Fantasma: no se toca `generarPdf.js` porque no
+está pedido en esta actualización). Los 5 principios se mantienen en ✅ PASS.
 
 ## Project Structure
 
@@ -119,7 +142,7 @@ backend/
 │   ├── services/
 │   │   ├── calculo.js              # sin cambios
 │   │   ├── numeracion.js           # sin cambios
-│   │   └── generarPdf.js           # (+) identidad visual (colores/tipografía), mismo contenido
+│   │   └── generarPdf.js           # sin cambios (PDF fuera de alcance, actualización 2026-07-31)
 │   ├── routes/
 │   │   ├── perfil.routes.js
 │   │   ├── catalogo.routes.js
@@ -131,6 +154,8 @@ backend/
 
 frontend/
 ├── index.html                      # (+) enlaces Inicio y Clientes en el nav común
+├── public/
+│   └── fonts/                      # (nuevo, 2026-07-31) .woff2 de Inter auto-alojados (FR-030)
 ├── src/
 │   ├── main.js                     # (+) ruta por defecto "/inicio", resaltar enlace activo
 │   ├── api.js                      # (+) llamadas a /api/clientes y PATCH estado
@@ -142,7 +167,9 @@ frontend/
 │   │   ├── catalogo.js             # sin cambios funcionales
 │   │   └── perfil.js               # sin cambios funcionales
 │   └── styles/
-│       └── base.css                # (+) tokens de color/tipografía/espaciado ampliados, estilos de badge y nav activo
+│       └── base.css                # (+) tokens de color/tipografía/espaciado ampliados, estilos de badge y nav activo;
+│                                    #     (actualización 2026-07-31) tokens sustituidos por los valores exactos de
+│                                    #     FR-029 a FR-039 ("Banca privada"), @font-face de Inter, radio 6px, sombra de tarjeta
 └── (build de Vite → servido por backend/src/app.js)
 
 tests/

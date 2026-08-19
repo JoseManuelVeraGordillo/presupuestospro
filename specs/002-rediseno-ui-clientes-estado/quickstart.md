@@ -55,32 +55,59 @@ cd frontend && npm run dev    # o "npm run build" para servir los estáticos ví
    **Esperado**: el estado sigue siendo Borrador después de la descarga (no
    cambia automáticamente a Enviado).
 
-## 3. Diseño visual profesional y coherente (User Story 3, SC-006, SC-007)
+## 3. Diseño visual "Banca privada" (User Story 3, SC-006, SC-007, SC-009, SC-010)
 
-1. Recorre Inicio, Presupuestos, Clientes, Catálogo y Perfil.
-   **Esperado**: misma tipografía y misma paleta de colores en las cinco
-   pantallas; el mismo espaciado entre secciones.
-2. Abre el detalle de un presupuesto con líneas y total.
+1. Recorre Inicio, Presupuestos, Clientes, Catálogo y Perfil, e inspecciona
+   con las herramientas de desarrollador (o a simple vista) el color de
+   fondo, el texto y los enlaces.
+   **Esperado**: fondo `#F7F8FA`, texto principal `#0B1F3A`, ningún enlace
+   con el subrayado o el azul/morado por defecto del navegador (FR-029,
+   FR-038, SC-010).
+2. Comprueba la fuente aplicada a cualquier texto (inspector del navegador).
+   **Esperado**: `Inter`, no la fuente del sistema (FR-030).
+3. Abre el listado de presupuestos con presupuestos en distintos estados.
+   **Esperado**: cada badge tiene el fondo tenue y el texto saturado del
+   color de su estado (Borrador gris, Enviado azul `#2E5AAC`, Aceptado verde
+   `#1E7A4C`, Rechazado rojo `#B4232C`, Caducado ámbar `#9A6700`), y el
+   importe de cada presupuesto se distingue en negrita con cifras alineadas
+   (FR-031, FR-032, SC-009: identificas estado e importe en menos de 2
+   segundos).
+4. Compara el radio de esquina y el fondo de una tarjeta de la lista de
+   presupuestos con el de un botón.
+   **Esperado**: mismo radio (6px) en ambos; la tarjeta se distingue del
+   fondo general por una sombra sutil, no solo por un borde (FR-033,
+   FR-034).
+5. Compara visualmente el bloque "+ Nuevo presupuesto" / "Exportar todo
+   (.zip)" con el listado de presupuestos debajo.
+   **Esperado**: se distinguen por más de un atributo (no solo el color de
+   relleno) (FR-035).
+6. Pasa el cursor (o el foco con Tab) por un botón, un `select` y una
+   pestaña de navegación.
+   **Esperado**: cada uno cambia de aspecto de forma visible respecto al
+   reposo (FR-036).
+7. Localiza el botón "Eliminar" de un presupuesto o cliente.
+   **Esperado**: usa el color de error y se distingue de los botones no
+   destructivos por algo más que el color (FR-037).
+8. Abre cualquier pantalla en una ventana de escritorio ancha (≥1280px).
+   **Esperado**: el contenido queda centrado en un ancho máximo consistente,
+   sin un hueco sin estructurar a la derecha (FR-039).
+9. Abre el detalle de un presupuesto con líneas y total.
    **Esperado**: el título, la tabla de líneas, el formulario y el total se
    distinguen claramente por jerarquía visual (el total resalta más que las
-   líneas).
-3. Con el presupuesto del bloque 2 apuntado (base 2.000,00 €, IVA 21%,
-   retención 15%), confirma que el total sigue siendo exactamente
-   `2.120,00 €` tras el rediseño (SC-006: el rediseño no cambia cálculos).
-4. Abre la aplicación desde un móvil real o con el emulador de pantalla
-   estrecha del navegador, y repite el paso 1.
-   **Esperado**: ninguna pantalla tiene scroll horizontal ni elementos
-   cortados; los botones siguen siendo fáciles de pulsar con el dedo.
+   líneas, en negrita con cifras tabulares).
+10. Con el presupuesto del paso 9 (base 2.000,00 €, IVA 21%, retención 15%),
+    confirma que el total sigue siendo exactamente `2.120,00 €` tras el
+    rediseño (SC-006: el rediseño no cambia cálculos).
+11. Abre la aplicación desde un móvil real o con el emulador de pantalla
+    estrecha del navegador, y repite el paso 1.
+    **Esperado**: ninguna pantalla tiene scroll horizontal ni elementos
+    cortados; los botones siguen siendo fáciles de pulsar con el dedo.
 
-## 4. PDF con la misma imagen profesional (User Story 4, SC-008)
+## 4. PDF con la misma imagen profesional (User Story 4)
 
-1. Descarga el PDF de un presupuesto con datos completos.
-2. Compara el PDF con la aplicación web abierta al lado.
-   **Esperado**: reconoces a simple vista la misma tipografía y paleta de
-   colores en ambos.
-3. Comprueba que el PDF sigue incluyendo exactamente la misma información
-   que antes del rediseño: logo (si existe), datos del freelancer, datos
-   del cliente, número, fechas, tabla de líneas y desglose de importes.
+> **Retirado (actualización 2026-07-31).** El PDF queda fuera de alcance de
+> la dirección "Banca privada": conserva su apariencia actual, no se valida
+> aquí. Ver spec, User Story 4 (retirada) y Assumptions.
 
 ## 5. Directorio de clientes (User Story 5, SC-004, SC-005)
 

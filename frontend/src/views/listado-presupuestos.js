@@ -18,10 +18,10 @@ export async function renderVistaListadoPresupuestos(contenedor) {
 
     contenedor.innerHTML = `
       <h2>Presupuestos</h2>
-      <p>
-        <a href="#/presupuesto/nuevo"><button type="button">+ Nuevo presupuesto</button></a>
-        <button type="button" class="secundario" data-exportar-todo>Exportar todo (.zip)</button>
-      </p>
+      <div class="acciones-principales">
+        <a href="#/presupuesto/nuevo"><button type="button" class="con-icono icono-nuevo">Nuevo presupuesto</button></a>
+        <button type="button" class="secundario con-icono icono-exportar" data-exportar-todo>Exportar todo (.zip)</button>
+      </div>
       <p class="aviso-error" data-aviso-exportar hidden></p>
       ${
         presupuestos.length === 0
@@ -33,7 +33,7 @@ export async function renderVistaListadoPresupuestos(contenedor) {
                 <li>
                   <span>
                     <strong>${escaparHtml(p.numero)}</strong> — ${formatearFecha(p.fechaEmision)} —
-                    ${escaparHtml(p.clienteNombre)} — ${formatearEuro(p.total)}
+                    ${escaparHtml(p.clienteNombre)} — <span class="importe">${formatearEuro(p.total)}</span>
                     <span class="badge-estado badge-estado-${p.estado}">${ESTADOS_PRESUPUESTO.find((e) => e.clave === p.estado)?.etiqueta ?? p.estado}</span>
                   </span>
                   <span class="acciones">
@@ -41,7 +41,7 @@ export async function renderVistaListadoPresupuestos(contenedor) {
                       <option value="">Cambiar estado…</option>
                       ${ESTADOS_EDITABLES.map((e) => `<option value="${e.clave}">${e.etiqueta}</option>`).join('')}
                     </select>
-                    <a href="#/presupuesto/${p.id}"><button type="button" class="secundario">Editar</button></a>
+                    <a href="#/presupuesto/${p.id}"><button type="button" class="secundario con-icono icono-editar">Editar</button></a>
                     <button type="button" class="peligro" data-eliminar="${p.id}">Eliminar</button>
                   </span>
                 </li>`

@@ -57,9 +57,9 @@ export async function renderVistaPresupuesto(contenedor, params) {
     const nodo = contenedor.querySelector('#desglose-contenido');
     if (nodo) {
       nodo.innerHTML = `
-        <p>Base imponible: ${formatearEuro(desglose.baseImponible)}</p>
-        <p>IVA (${estado.tipoIva}%): ${formatearEuro(desglose.iva)}</p>
-        ${desglose.retencion > 0 ? `<p>Retención: −${formatearEuro(desglose.retencion)}</p>` : ''}
+        <p>Base imponible: <span class="importe">${formatearEuro(desglose.baseImponible)}</span></p>
+        <p>IVA (${estado.tipoIva}%): <span class="importe">${formatearEuro(desglose.iva)}</span></p>
+        ${desglose.retencion > 0 ? `<p>Retención: <span class="importe">−${formatearEuro(desglose.retencion)}</span></p>` : ''}
         <p class="total">Total: ${formatearEuro(desglose.total)}</p>
       `;
     }
@@ -184,7 +184,7 @@ export async function renderVistaPresupuesto(contenedor, params) {
           )
           .join('')}
       </ul>
-      <button type="button" id="anadir-linea" class="secundario">+ Añadir línea a mano</button>
+      <button type="button" id="anadir-linea" class="secundario con-icono icono-nuevo">Añadir línea a mano</button>
 
       ${
         catalogo.length > 0
@@ -209,8 +209,8 @@ export async function renderVistaPresupuesto(contenedor, params) {
       <p id="aviso-vacio" class="aviso-error" hidden>No se puede descargar el PDF: añade al menos una línea.</p>
 
       <div class="acciones">
-        <button type="button" id="guardar">${id ? 'Guardar cambios' : 'Guardar presupuesto'}</button>
-        <button type="button" id="descargar-pdf" class="secundario">Descargar PDF</button>
+        <button type="button" id="guardar" class="con-icono icono-guardar">${id ? 'Guardar cambios' : 'Guardar presupuesto'}</button>
+        <button type="button" id="descargar-pdf" class="secundario con-icono icono-exportar">Descargar PDF</button>
       </div>
     `;
 

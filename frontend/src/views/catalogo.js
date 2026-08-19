@@ -15,7 +15,7 @@ export async function renderVistaCatalogo(contenedor) {
         <label>Precio por defecto (€)
           <input type="number" name="precioPorDefecto" step="0.01" min="0" required />
         </label>
-        <button type="submit">Añadir al catálogo</button>
+        <button type="submit" class="con-icono icono-nuevo">Añadir al catálogo</button>
       </form>
 
       <h3>Servicios guardados</h3>
@@ -29,7 +29,7 @@ export async function renderVistaCatalogo(contenedor) {
                 <li>
                   <span>${escaparHtml(s.nombre)} — ${formatearEuro(s.precioPorDefecto)}</span>
                   <span class="acciones">
-                    <button type="button" class="secundario" data-editar="${s.id}">Editar</button>
+                    <button type="button" class="secundario con-icono icono-editar" data-editar="${s.id}">Editar</button>
                     <button type="button" class="peligro" data-eliminar="${s.id}">Eliminar</button>
                   </span>
                 </li>`

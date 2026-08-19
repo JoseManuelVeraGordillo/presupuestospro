@@ -20,10 +20,10 @@ export async function renderVistaInicio(contenedor) {
     <p>Accede a cada sección de PresupuestosPro:</p>
 
     <ul class="lista-items">
-      <li><a href="#/presupuestos">Presupuestos</a></li>
-      <li><a href="#/clientes">Clientes</a></li>
-      <li><a href="#/catalogo">Catálogo</a></li>
-      <li><a href="#/perfil">Perfil</a></li>
+      <li><a class="acceso-seccion" href="#/presupuestos">Presupuestos</a></li>
+      <li><a class="acceso-seccion" href="#/clientes">Clientes</a></li>
+      <li><a class="acceso-seccion" href="#/catalogo">Catálogo</a></li>
+      <li><a class="acceso-seccion" href="#/perfil">Perfil</a></li>
     </ul>
 
     <h3>Resumen de presupuestos por estado</h3>

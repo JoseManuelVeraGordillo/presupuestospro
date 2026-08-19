@@ -97,21 +97,29 @@ de la API no cambian).
 
 ## 6. Identidad visual compartida entre la web y el PDF
 
-- **Decision**: Los tokens de color/tipografía/espaciado viven en `:root` de
-  `frontend/src/styles/base.css` (ya el único lugar de la paleta hoy, FR-007).
-  En el backend, `generarPdf.js` define una pequeña constante
-  (`PALETA_MARCA`) con los mismos valores hexadecimales usados en `base.css`,
-  con un comentario que indica que debe mantenerse sincronizada a mano.
-- **Rationale**: `frontend/` y `backend/` son dos paquetes npm
-  independientes sin build compartido ni bundler común; crear un paquete de
-  "design tokens" compartido (p. ej. un JSON consumido por Vite y por Node)
-  sería una pieza de infraestructura nueva no justificada por el tamaño de
-  la paleta (un puñado de colores) — Principio I. Duplicar esa constante
-  pequeña con un comentario de sincronización es la opción más simple que
-  cumple FR-014.
-- **Alternatives considered**: Paquete compartido de tokens de diseño
-  (workspace npm + JSON) — rechazado por complejidad desproporcionada al
-  tamaño del cambio.
+> **Retirado (actualización 2026-07-31).** La dirección "Banca privada"
+> excluye explícitamente el PDF de esta iteración (ver spec, User Story 4
+> retirada). `generarPdf.js` no se modifica y no necesita ninguna constante
+> `PALETA_MARCA` ni sincronización con `base.css` en esta feature. Se
+> conserva la decisión original tachada como registro histórico; si en el
+> futuro se alinea el PDF con esta identidad visual, esta decisión (o una
+> equivalente) debería revisarse en una spec propia.
+
+~~**Decision**: Los tokens de color/tipografía/espaciado viven en `:root` de
+`frontend/src/styles/base.css` (ya el único lugar de la paleta hoy, FR-007).
+En el backend, `generarPdf.js` define una pequeña constante
+(`PALETA_MARCA`) con los mismos valores hexadecimales usados en `base.css`,
+con un comentario que indica que debe mantenerse sincronizada a mano.~~
+~~**Rationale**: `frontend/` y `backend/` son dos paquetes npm
+independientes sin build compartido ni bundler común; crear un paquete de
+"design tokens" compartido (p. ej. un JSON consumido por Vite y por Node)
+sería una pieza de infraestructura nueva no justificada por el tamaño de
+la paleta (un puñado de colores) — Principio I. Duplicar esa constante
+pequeña con un comentario de sincronización es la opción más simple que
+cumple FR-014.~~
+~~**Alternatives considered**: Paquete compartido de tokens de diseño
+(workspace npm + JSON) — rechazado por complejidad desproporcionada al
+tamaño del cambio.~~
 
 ## 7. Navegación común visible en todas las páginas
 
@@ -160,6 +168,25 @@ de la API no cambian).
   navegación y estilos — rechazado por Principio I y III (no pedido en la
   spec).
 
+## 10. Cómo incorporar la tipografía Inter sin añadir dependencias nuevas (actualización 2026-07-31)
+
+- **Decision**: Descargar los ficheros estáticos `.woff2` de Inter (pesos
+  400/500/600) y alojarlos en `frontend/public/fonts/`, declarados con
+  `@font-face` en `base.css` (FR-030). Vite los sirve como cualquier otro
+  activo estático del build, sin ninguna dependencia npm nueva.
+- **Rationale**: Añadir `@fontsource/inter` (paquete npm) sería una
+  dependencia nueva para servir lo mismo que unos pocos ficheros estáticos —
+  desproporcionado (Principio I). Cargar Inter desde Google Fonts (`<link>`
+  o `@import` a `fonts.googleapis.com`) introduciría la primera petición de
+  red a un tercero en tiempo de ejecución de una aplicación que hoy funciona
+  enteramente self-hosted (un único proceso Express sirviendo API + estáticos,
+  sin llamadas salientes) — no está justificado por esta feature ni pedido
+  en la spec.
+- **Alternatives considered**: `@fontsource/inter` (rechazado: dependencia
+  nueva innecesaria); CDN de Google Fonts (rechazado: dependencia de red
+  externa no existente hoy en el proyecto, y con implicaciones de privacidad
+  no evaluadas — fuera del alcance de esta feature).
+
 ## Resumen de decisiones (Technical Context)
 
 Todas las incógnitas de la sección "Technical Context" del plan quedan
@@ -167,3 +194,8 @@ resueltas reutilizando el sistema ya existente; no quedan puntos con "NEEDS
 CLARIFICATION". No hay ninguna desviación de la constitución que registrar
 en "Complexity Tracking" — todas las decisiones anteriores refuerzan el
 Principio I en vez de desviarse de él.
+
+**Actualización 2026-07-31**: El punto 6 (identidad visual compartida con el
+PDF) queda retirado — el PDF está fuera de alcance de la dirección "Banca
+privada". Se añade el punto 10 (tipografía Inter auto-alojada). El resto de
+decisiones (1-5, 7-9) no se ven afectadas por esta actualización.
