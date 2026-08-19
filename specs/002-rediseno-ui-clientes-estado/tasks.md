@@ -121,7 +121,8 @@ No aplica: esta feature no crea ningún proyecto ni carpeta de primer nivel nuev
 - [X] T043 [US3] Auditar `frontend/src/views/catalogo.js`, `clientes.js`, `perfil.js` y `presupuesto.js` en busca de cualquier `<a>` sin clase que pueda heredar el estilo por defecto del navegador, y aplicarles la clase/estilo de enlace ya definida (FR-038; no paralelizable con T039 — ambas tocan `presupuesto.js`) — auditoría confirma que `catalogo.js`, `clientes.js` y `perfil.js` no contienen ningún `<a>`; el único enlace de `presupuesto.js` ya queda cubierto por el reset global de `a` (color primario, sin subrayado por defecto)
 - [X] T044 [US3] Definir un contenedor de ancho máximo consistente (reutilizar `.contenido` o equivalente) y aplicarlo también a `frontend/src/views/inicio.js`, para que ninguna vista quede con contenido sin centrar en escritorio ≥1280px (depends on T035, T042, mismos ficheros; FR-039) — `main#app.contenido` ya envolvía todas las vistas incluida `inicio.js` a través de `main.js`; el ajuste real fue ampliar `max-width` de 720px a 960px para reducir el vacío sin estructurar en escritorio ancho
 - [X] T045 [US3] Distinguir el bloque de navegación/acciones primarias (p. ej. "+ Nuevo presupuesto", "Exportar todo (.zip)") del listado de datos por más de un atributo visual en `frontend/src/views/listado-presupuestos.js` y `frontend/src/styles/base.css` (depends on T035, T039, mismos ficheros; FR-035) — nueva clase `.acciones-principales` (fondo de superficie + sombra) aplicada al contenedor de esos botones
-- [ ] T046 [US3] Ejecutar la sección 3 (pasos 1-11) de `specs/002-rediseno-ui-clientes-estado/quickstart.md` y confirmar SC-006, SC-007, SC-009 y SC-010 (depends on T034-T045) — **bloqueada**: no hay Node.js/npm disponible en este entorno para arrancar `backend`/`frontend`; pendiente de validación manual por el usuario
+- [ ] T046 [US3] Ejecutar la sección 3 (pasos 1-11) de `specs/002-rediseno-ui-clientes-estado/quickstart.md` y confirmar SC-006, SC-007, SC-009 y SC-010 (depends on T034-T045) — app ya levantada (`backend` :3000, `frontend`/Vite :5173) con Node v24.18.0; pendiente de que el usuario recorra los pasos a ojo en el navegador
+- [X] T048 [US3] *(2026-08-03, fuera de FR — petición directa del usuario)* Añadir un icono dentro de los botones de toda la app para mejorar su identificación: clases `.con-icono` + `.icono-nuevo`/`.icono-editar`/`.icono-guardar`/`.icono-exportar`/`.icono-quitar` en `frontend/src/styles/base.css` (símbolos Unicode vía `::before`, mismo patrón que `button.peligro`), aplicadas en `listado-presupuestos.js`, `catalogo.js`, `clientes.js`, `perfil.js` y `presupuesto.js`. No ligado a ningún FR de esta spec (ver nota en "Notes")
 
 **Checkpoint**: User Story 3 refleja la dirección visual "Banca privada" con valores exactos y verificables.
 
@@ -270,3 +271,7 @@ Tras Foundational: una persona en US1, otra en US2, otra en US5 (todas independi
   "Banca privada" (FR-029 a FR-039, `specs/pre-spec-rediseno-visual-banca-privada.md`).
   T001-T033 ya estaban completadas antes de esta actualización y no se repiten. No hay
   tareas para User Story 4 (PDF): queda retirada del alcance (ver spec, Assumptions).
+- **T048 (2026-08-03)**: petición directa del usuario, fuera de los FR de esta spec
+  (FR-037 solo cubre el icono del botón "Eliminar", ya existente). Tratado como tweak
+  informal — si se quiere trazabilidad completa, convendría formalizarlo como FR propio
+  en una futura revisión, en vez de dejarlo solo aquí.

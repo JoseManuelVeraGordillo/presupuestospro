@@ -23,7 +23,7 @@ export async function renderVistaClientes(contenedor) {
             <option value="empresa_autonomo">Empresa/Autónomo</option>
           </select>
         </label>
-        <button type="submit">Añadir cliente</button>
+        <button type="submit" class="con-icono icono-nuevo">Añadir cliente</button>
       </form>
 
       <h3>Clientes guardados</h3>
@@ -37,7 +37,7 @@ export async function renderVistaClientes(contenedor) {
                 <li>
                   <span>${escaparHtml(c.nombre)} — ${TIPO_TEXTO[c.tipo]}</span>
                   <span class="acciones">
-                    <button type="button" class="secundario" data-editar="${c.id}">Editar</button>
+                    <button type="button" class="secundario con-icono icono-editar" data-editar="${c.id}">Editar</button>
                     <button type="button" class="peligro" data-eliminar="${c.id}">Eliminar</button>
                   </span>
                 </li>`

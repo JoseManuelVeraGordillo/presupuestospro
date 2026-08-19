@@ -114,6 +114,7 @@ a:focus-visible {
   min-height: 44px;
   display: inline-flex;
   align-items: center;
+  gap: 0.4rem;
   border-radius: var(--radio);
   background: var(--color-fondo);
   border: 1px solid var(--color-borde);
@@ -135,6 +136,32 @@ a:focus-visible {
   background: var(--color-primario);
   border-color: var(--color-primario);
   color: #fff;
+}
+
+/* Iconos de la navegación común, mismo criterio que los botones (T048):
+   símbolos Unicode vía ::before, sin icon font ni dependencia nueva. */
+.navegacion a::before {
+  font-size: 0.95em;
+}
+
+.icono-inicio::before {
+  content: '⌂';
+}
+
+.icono-presupuestos::before {
+  content: '▤';
+}
+
+.icono-clientes::before {
+  content: '◉';
+}
+
+.icono-catalogo::before {
+  content: '▥';
+}
+
+.icono-perfil::before {
+  content: '⚙';
 }
 
 .contenido {
@@ -251,6 +278,38 @@ button.peligro:hover {
 button:disabled {
   background: var(--color-estado-borrador);
   cursor: default;
+}
+
+/* Iconos de botones para mejorar la identificación de la acción a golpe de
+   vista (petición del usuario, no ligada a un FR concreto — ver tasks.md). */
+button.con-icono {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+button.con-icono::before {
+  font-size: 0.95em;
+}
+
+button.icono-nuevo::before {
+  content: '+';
+}
+
+button.icono-editar::before {
+  content: '✎';
+}
+
+button.icono-guardar::before {
+  content: '✓';
+}
+
+button.icono-exportar::before {
+  content: '⬇';
+}
+
+button.icono-quitar::before {
+  content: '✕';
 }
 
 table {

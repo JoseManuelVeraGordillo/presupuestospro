@@ -34,8 +34,8 @@ export async function renderVistaPerfil(contenedor) {
           <input type="file" name="logo" accept="image/png,image/jpeg" />
         </label>
         ${logoPendiente ? `<img src="${logoPendiente}" alt="Logo actual" style="max-width:120px" />` : ''}
-        ${logoPendiente ? '<button type="button" id="quitar-logo" class="secundario">Quitar logo</button>' : ''}
-        <button type="submit">Guardar perfil</button>
+        ${logoPendiente ? '<button type="button" id="quitar-logo" class="secundario con-icono icono-quitar">Quitar logo</button>' : ''}
+        <button type="submit" class="con-icono icono-guardar">Guardar perfil</button>
       </form>
       ${mensaje ? `<p>${escaparHtml(mensaje)}</p>` : ''}
     `;

@@ -19,8 +19,8 @@ export async function renderVistaListadoPresupuestos(contenedor) {
     contenedor.innerHTML = `
       <h2>Presupuestos</h2>
       <div class="acciones-principales">
-        <a href="#/presupuesto/nuevo"><button type="button">+ Nuevo presupuesto</button></a>
-        <button type="button" class="secundario" data-exportar-todo>Exportar todo (.zip)</button>
+        <a href="#/presupuesto/nuevo"><button type="button" class="con-icono icono-nuevo">Nuevo presupuesto</button></a>
+        <button type="button" class="secundario con-icono icono-exportar" data-exportar-todo>Exportar todo (.zip)</button>
       </div>
       <p class="aviso-error" data-aviso-exportar hidden></p>
       ${
@@ -41,7 +41,7 @@ export async function renderVistaListadoPresupuestos(contenedor) {
                       <option value="">Cambiar estado…</option>
                       ${ESTADOS_EDITABLES.map((e) => `<option value="${e.clave}">${e.etiqueta}</option>`).join('')}
                     </select>
-                    <a href="#/presupuesto/${p.id}"><button type="button" class="secundario">Editar</button></a>
+                    <a href="#/presupuesto/${p.id}"><button type="button" class="secundario con-icono icono-editar">Editar</button></a>
                     <button type="button" class="peligro" data-eliminar="${p.id}">Eliminar</button>
                   </span>
                 </li>`
